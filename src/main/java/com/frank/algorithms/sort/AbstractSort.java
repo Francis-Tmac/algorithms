@@ -21,7 +21,7 @@ public abstract class AbstractSort implements SortAlgorithms{
         Long endTime = System.currentTimeMillis();
         Long time = endTime - startTime;
         BigDecimal bigDecimal = new BigDecimal(time).movePointLeft(3);
-        System.out.println(string + "算法共消耗： "+ bigDecimal +" 秒");
+        System.out.println(string + "算法，此排序数组大小为: "+ getStringInteger(integerArray.length) +", 共消耗： "+ bigDecimal +" 秒");
     }
 
     protected   void exchange(Integer[] integerArray, int from, int to){
@@ -37,5 +37,49 @@ public abstract class AbstractSort implements SortAlgorithms{
             sb.append(integerArray[i] + ", ");
         }
         System.out.println(sb);
+    }
+
+    private  StringBuilder getStringInteger(Integer integer){
+        int length = getLength(integer);
+        int index = (length / 3);
+        if(length % 3 == 0){
+            index = index-1;
+        }
+        StringBuilder sb = new StringBuilder();
+        Integer last = integer;
+        for(int i = 0; i < index ; i++){
+            Integer temp = last % 1000;
+            String tempString ;
+            if(temp.equals(0)){
+                tempString = ","+"000";
+            }else if(temp < 10){
+                tempString = ",00" + temp.toString() ;
+            }else if(temp < 100){
+                tempString = ",0" + temp.toString() ;
+            }else {
+                tempString = "," + temp.toString();
+            }
+            last = last/1000;
+            sb.insert(0,tempString);
+        }
+        sb.insert(0,last.toString());
+        return sb;
+    }
+
+    private  int getLength(Integer integer){
+        if(integer < 0){
+            throw new IllegalArgumentException();
+        }
+        int size = 1 ;
+        Integer temp = integer;
+        for(Boolean i = true; i;){
+            temp = temp / 10;
+            if(temp < 1){
+                i = false;
+            }else {
+                size++;
+            }
+        }
+        return size;
     }
 }
