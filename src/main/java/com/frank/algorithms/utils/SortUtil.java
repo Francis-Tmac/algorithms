@@ -43,6 +43,18 @@ public class  SortUtil {
             integerArray[i] = j;
         }
         return integerArray;
+    }
 
+    /***
+     * 复制数组
+     * @param arr
+     * @return
+     */
+    public static Integer[] copyArr(Integer[] arr){
+        Integer[] arrCopy = new Integer[arr.length];
+        for (int i = 0; i < arr.length; i++){
+            arrCopy[i] = arr[i];
+        }
+        return arrCopy;
     }
 }
