@@ -9,7 +9,15 @@ package com.frank.algorithms.sort;
 
 public interface SortAlgorithms {
 
-    void sort(Integer[] integerArray);
+    /****
+     * 对数组进行排序
+     * @param arr
+     */
+    void sort(Integer[] arr);
 
+    /***
+     * 得到排序方法的名字
+     * @return
+     */
     String getSortName();
 }

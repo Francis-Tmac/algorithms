@@ -21,12 +21,12 @@ public class SelectionSort extends AbstractSort{
                     minIndex = j;
                 }
             }
-            super.exchange(integerArray,i,minIndex);
+            super.swap(integerArray,i,minIndex);
         }
     }
 
     @Override
     public String getSortName() {
-        return "选择排序";
+        return "选择排序-";
     }
 }

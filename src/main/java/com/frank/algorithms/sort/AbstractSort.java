@@ -14,21 +14,36 @@ import java.util.Date;
 
 public abstract class AbstractSort implements SortAlgorithms{
 
+    /***
+     * 输出数组间隔三位数字
+     */
+    public static final int SEP_NUMBER = 3;
 
     protected void testSortTime(String string, Integer[] integerArray){
         Long startTime = System.currentTimeMillis();
-        this.sort(integerArray);
+        this. sort(integerArray);
         Long endTime = System.currentTimeMillis();
         Long time = endTime - startTime;
         BigDecimal bigDecimal = new BigDecimal(time).movePointLeft(3);
-        System.out.println(string + "算法，此排序数组大小为: "+ getStringInteger(integerArray.length) +", 共消耗： "+ bigDecimal +" 秒");
+        System.out.println(string + "算法，此排序数组大小为: "+ getStringInteger(integerArray.length) +" 共消耗： "+ bigDecimal +" 秒");
+        isSorted(integerArray);
     }
 
-    protected   void exchange(Integer[] integerArray, int from, int to){
+    protected   void swap(Integer[] integerArray, int from, int to){
         Integer temp = integerArray[from];
         integerArray[from] = integerArray[to];
         integerArray[to] = temp;
     }
+
+    protected void isSorted(Integer[] integerArray){
+        for(int i = 0; i < integerArray.length-1; i++){
+            if(integerArray[i]>integerArray[i+1]){
+                System.out.println("非从小到大数组！！！！！！！！！！！！！");
+            }
+        }
+        System.out.println("--------------有序数组");
+    }
+
 
     protected  void printArray(Integer[] integerArray){
         StringBuilder sb = new StringBuilder();
@@ -42,7 +57,7 @@ public abstract class AbstractSort implements SortAlgorithms{
     private  StringBuilder getStringInteger(Integer integer){
         int length = getLength(integer);
         int index = (length / 3);
-        if(length % 3 == 0){
+        if(length % SEP_NUMBER == 0){
             index = index-1;
         }
         StringBuilder sb = new StringBuilder();
