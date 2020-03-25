@@ -43,7 +43,12 @@ public class MergeSort extends AbstractSort {
         /***
          * 将两个数组合并[left,mid] , [mid + 1, right]
          */
-        int auxMid = (aux.length - 1)/2;
+        //aux 数组的右边界下角标
+        int t = aux.length - 1;
+        //auc 数组的左边界的下角标
+        int l = 0;
+
+        int auxMid = (t-l) / 2;
         //左数组开始的位置
         int j = 0;
         //右数组开始的位置
@@ -52,7 +57,7 @@ public class MergeSort extends AbstractSort {
             if( j > auxMid){
                 arr[i] = aux[k];
                 k++;
-            }else if( k > aux.length - 1){
+            }else if( k > t){
                 arr[i] = aux[j];
                 j++;
             }else if( aux[k] >= aux[j]){
