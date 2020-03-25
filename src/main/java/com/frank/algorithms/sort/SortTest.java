@@ -12,7 +12,7 @@ import com.frank.algorithms.utils.SortUtil;
 public class SortTest {
     private static final Integer START = 0;
 
-    private static final Integer ARRAY_SIZE = 90000;
+    private static final Integer ARRAY_SIZE = 150000;
 
     public static void main(String[] args) {
         /**
@@ -20,6 +20,7 @@ public class SortTest {
          */
         Integer[] selectionArray = SortUtil.getIntegerArray(ARRAY_SIZE,START,ARRAY_SIZE);
         Integer[] insertionArray = SortUtil.copyArr(selectionArray);
+        Integer[] mergeArray = SortUtil.copyArr(selectionArray);
 
         /***
          * 选择排序
@@ -32,5 +33,11 @@ public class SortTest {
          */
         InsertionSort insertionSort = new InsertionSort();
         insertionSort.testSortTime(insertionSort.getSortName(),insertionArray);
+
+        /***
+         * 归并排序
+         */
+        MergeSort mergeSort = new MergeSort();
+        mergeSort.testSortTime(mergeSort.getSortName(),mergeArray);
     }
 }
