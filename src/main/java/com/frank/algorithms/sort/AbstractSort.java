@@ -36,9 +36,10 @@ public abstract class AbstractSort implements SortAlgorithms{
     }
 
     protected void isSorted(Integer[] integerArray){
-        for(int i = 0; i < integerArray.length-1; i++){
+        for(int i = 0; i < integerArray.length-1 ; i++){
             if(integerArray[i]>integerArray[i+1]){
                 System.out.println("非从小到大数组！！！！！！！！！！！！！");
+                return;
             }
         }
         System.out.println("--------------有序数组");
