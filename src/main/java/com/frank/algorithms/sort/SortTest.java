@@ -12,7 +12,7 @@ import com.frank.algorithms.utils.SortUtil;
 public class SortTest {
     private static final Integer START = 0;
 
-    private static final Integer ARRAY_SIZE = 150000;
+    private static final Integer ARRAY_SIZE = 100000;
 
     public static void main(String[] args) {
         /**

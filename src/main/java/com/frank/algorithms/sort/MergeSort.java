@@ -26,7 +26,9 @@ public class MergeSort extends AbstractSort {
         // [left,mid] , (mid, right]
         _mergeSort( arr, left, mid);
         _mergeSort( arr,mid+1, right);
-
+        /*if( arr[mid] > arr[mid + 1]){
+            merge( arr, left, mid , right);
+        }*/
         merge( arr, left, mid , right);
     }
 
