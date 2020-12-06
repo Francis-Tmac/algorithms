@@ -12,7 +12,7 @@ import com.frank.algorithms.utils.SortUtil;
 public class SortTest {
     private static final Integer START = 0;
 
-    private static final Integer ARRAY_SIZE = 50;
+    private static final Integer ARRAY_SIZE = 20;
 
     public static void main(String[] args) {
         /**
@@ -44,7 +44,6 @@ public class SortTest {
          * 快速排序
          */
         QuickSort quickSort = new QuickSort();
-        quickSort.printArray(quickArray);
         quickSort.testSortTime(quickSort.getSortName(),quickArray);
         quickSort.printArray(quickArray);
     }

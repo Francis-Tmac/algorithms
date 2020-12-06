@@ -1,5 +1,7 @@
 package com.frank.algorithms.sort;
 
+import com.frank.algorithms.QuickReturnDTO;
+
 /**
  * @program: algorithms
  * @description:
@@ -9,39 +11,68 @@ package com.frank.algorithms.sort;
 
 public class QuickSort extends AbstractSort {
 
-    private int partition(Integer[] arr,int j, int k){
+    private QuickReturnDTO partition(Integer[] arr, int j, int k){
+        QuickReturnDTO quickReturn = new QuickReturnDTO();
         Integer t = arr[j];
         System.out.println("j = " + j + ", k = " + k);
         Integer left = j;
+        Integer i = j+1;
         Integer right = k;
         // 定义[0,left] 为 <= t 的数组
         // [left,arr.length - 1] 为 > t 的区间
         // 当left >= right 结束循环
-        while (left < right){
-            if(arr[right] > t){
+        System.out.println("T: " + arr[j]);
+        while(i < right){
+            if(arr[i] < t){
+               swap(i, left++, arr);
+               i++;
+            }
+            if(arr[i] > t){
+                swap(i,right,arr);
                 right--;
-                continue;
             }
-            if(arr[left] <= t){
-                left++;
-                continue;
+            if(arr[i].equals(t)){
+                i++;
             }
-            swap( left, right, arr);
-            right--;
         }
-        swap(j,left,arr);
-        System.out.println("t: "+ arr[left]+", left: " + left);
-        return left;
+        System.out.println("j: " + arr[j] + " left: " + arr[left]);
+
+
+
+
+//        while (!i.equals(right)){
+//            if(arr[i] < t){
+//                left++;
+//                i++;
+//                continue;
+//            }
+//            if(arr[right] > t){
+//                right--;
+//                continue;
+//            }
+//
+//            swap( left, right, arr);
+//            right--;
+//        }
+//        swap(j,left,arr);
+//        System.out.println("t: "+ arr[left]+", left: " + left);
+        quickReturn.setLeft(left);
+        quickReturn.setRight(right);
+        return quickReturn;
     }
 
     private void quick(Integer[] arr, int j, int k){
         if(j>=k){
             return;
         }
-        int p = partition(arr, j, k);
+        System.out.println("排序前： ");
         printArray(arr);
-        quick(arr, j, p - 1);
-        quick(arr, p + 1, k);
+        QuickReturnDTO quickReturn = partition(arr, j, k);
+        System.out.println("quickReturn :"+ quickReturn.toString());
+        System.out.println("排序后： ");
+        printArray(arr);
+        quick(arr, j, quickReturn.getLeft()-1);
+        quick(arr, quickReturn.getRight(), k);
     }
 
 
