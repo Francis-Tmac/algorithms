@@ -17,17 +17,21 @@ public class BST {
     private int count;
 
     private Node insert(Node root, int key, String value){
+        return insert(null,root,key,value);
+    }
+
+    private Node insert(Node parent, Node root, int key, String value){
         if ( root == null){
             count++;
-            return new Node(key,value);
+            return new Node(parent, key,value);
         }
         if(root.getKey() == key){
             root.setValue(value);
 
         } else if ( root.getKey() > key){
-            root.setLeftNode(insert(root.getLeftNode(), key, value));
+            root.setLeftNode(insert(root,root.getLeftNode(), key, value));
         } else{
-            root.setRightNode(insert(root.getRightNode(), key, value));
+            root.setRightNode(insert(root,root.getRightNode(), key, value));
         }
         return root;
     }
@@ -92,6 +96,36 @@ public class BST {
         }
     }
 
+    private Node getMinNode(){
+        if(count == 0){
+            return null;
+        }
+        return minNode(root);
+    }
+
+    private Node minNode(Node node){
+        if(node.getLeftNode() == null){
+            return node;
+        }else {
+            return minNode(node.getLeftNode());
+        }
+    }
+
+    private Node getMaxNode(){
+        if(count == 0){
+            return null;
+        }
+        return maxNode(root);
+    }
+
+    private Node maxNode(Node node){
+        if(node.getRightNode() == null){
+            return node;
+        }else {
+            return maxNode(node.getRightNode());
+        }
+    }
+
     private void destroy(Node root){
         if(root.getLeftNode() != null){
             destroy(root.getLeftNode());
@@ -106,6 +140,14 @@ public class BST {
         }
     }
 
+    private Node removeMin(Node root){
+        if(root.getLeftNode() == null){
+            Node min = root;
+
+        }
+        return null;
+    }
+
     private void levelOrder(Node root){
         Queue<Node> queue = new LinkedList();
         if(root != null){
@@ -113,7 +155,12 @@ public class BST {
         }
         while (!queue.isEmpty()) {
             Node node = queue.poll();
-            System.out.println(node.getString());
+            if(node == root){
+                System.out.println(node.getRootString());
+            }else {
+                System.out.println(node.getString());
+            }
+
             if(node.getLeftNode() != null){
                 queue.add(node.getLeftNode());
             }
@@ -128,6 +175,7 @@ public class BST {
     public static void main(String[] args) {
         BST bst = new BST();
         Node root = bst.insert(null, 8, "baba");
+        bst.root = root;
         bst.insert(root, 6, "liuliu");
         bst.insert(root, 3, "sansan");
         bst.insert(root, 7, "qiqi");
@@ -141,7 +189,9 @@ public class BST {
         System.out.println("levelOrder: ");
         bst.levelOrder(root);
 
+        System.out.println("minNode: " + bst.getMinNode().getString());
 
+        System.out.println("maxNode: " + bst.getMaxNode().getString());
     }
 }
 
@@ -150,11 +200,14 @@ class Node{
 
     private String value;
 
+    private Node parent;
+
     private Node leftNode;
 
     private Node rightNode;
 
-    public Node(int key, String value){
+    public Node(Node parent, int key, String value){
+        this.parent = parent;
         this.key = key;
         this.value = value;
     }
@@ -168,6 +221,14 @@ class Node{
 
     public int getKey(){
         return key;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
     }
 
     public Node getLeftNode() {
@@ -203,12 +264,20 @@ class Node{
         return "Node{" +
                 "key=" + key +
                 ", value='" + value + '\'' +
+                ", parent=" + parent +
                 ", leftNode=" + leftNode +
-                ", rightNode=" + rightNode+
+                ", rightNode=" + rightNode +
                 '}';
     }
 
     public String getString(){
+        return "Node{" +
+                "key=" + key +
+                ", value='" + value +
+                ", parent.key =" + parent.getKey() +
+                '}';
+    }
+    public String getRootString(){
         return "Node{" +
                 "key=" + key +
                 ", value='" + value +
