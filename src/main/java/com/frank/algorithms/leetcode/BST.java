@@ -1,5 +1,8 @@
 package com.frank.algorithms.leetcode;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * @program: algorithms
  * @description:
@@ -102,6 +105,26 @@ public class BST {
             count--;
         }
     }
+
+    private void levelOrder(Node root){
+        Queue<Node> queue = new LinkedList();
+        if(root != null){
+            queue.add(root);
+        }
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            System.out.println(node.getString());
+            if(node.getLeftNode() != null){
+                queue.add(node.getLeftNode());
+            }
+            if(node.getRightNode() != null){
+                queue.add(node.getRightNode());
+            }
+        }
+    }
+
+
+
     public static void main(String[] args) {
         BST bst = new BST();
         Node root = bst.insert(null, 8, "baba");
@@ -113,12 +136,11 @@ public class BST {
         bst.insert(root, 12, "shier");
         bst.insert(root, 14, "shisi");
         bst.insert(root, 5, "wuwu");
-        System.out.println("preOrder: ");
-        bst.preOrder(root);
-        System.out.println("destroy: ");
-        bst.destroy(root);
-        System.out.println("preOrder: ");
-        bst.preOrder(root);
+//        System.out.println("preOrder: ");
+//        bst.preOrder(root);
+        System.out.println("levelOrder: ");
+        bst.levelOrder(root);
+
 
     }
 }
@@ -183,6 +205,13 @@ class Node{
                 ", value='" + value + '\'' +
                 ", leftNode=" + leftNode +
                 ", rightNode=" + rightNode+
+                '}';
+    }
+
+    public String getString(){
+        return "Node{" +
+                "key=" + key +
+                ", value='" + value +
                 '}';
     }
 }
