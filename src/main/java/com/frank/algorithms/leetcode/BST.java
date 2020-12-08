@@ -29,6 +29,7 @@ public class BST {
             root.setValue(value);
 
         } else if ( root.getKey() > key){
+
             root.setLeftNode(insert(root,root.getLeftNode(), key, value));
         } else{
             root.setRightNode(insert(root,root.getRightNode(), key, value));
@@ -140,12 +141,126 @@ public class BST {
         }
     }
 
-    private Node removeMin(Node root){
-        if(root.getLeftNode() == null){
-            Node min = root;
+    public int floor(int key){
 
+        if( count == 0 || key < 0 ){
+            return -1;
+        }
+
+        Node floorNode = floor(root, key);
+        return floorNode.getKey();
+    }
+
+
+    private Node floor(Node node, int key){
+        if(node == null) {
+            return null;
+        }
+        //如果该node的key和key相等，就是本身
+        if(node.getKey() == key){
+            return node;
+        }
+
+        //如果该node比key要大的话
+        if(node.getKey() > key){
+            return floor(node.getLeftNode(), key);
+        }
+
+        //如果node比key小，可能是，也能是不是
+        Node tempNode = floor(node.getRightNode(), key);
+        if(tempNode != null) {
+            return tempNode;
+        }
+        //想当于 tempNode == null
+        return node;
+    }
+
+    private Node removeMin(){
+        if(root != null){
+            return removeMin(root);
         }
         return null;
+    }
+
+    private Node removeMax(){
+        if(root != null){
+            return removeMax(root);
+        }
+        return null;
+    }
+
+
+    private Node removeMin(Node root){
+        // 当左子节点为空时即该节点为，最小节点。将右子节点返回
+        if(root.getLeftNode() == null){
+            Node right = root.getRightNode();
+            count --;
+            return right;
+        }
+        // 若有左子节点则继续遍历，左子节点
+        root.setLeftNode(removeMin(root.getLeftNode()));
+        return root;
+    }
+
+    private Node removeMax(Node root){
+        if(root.getRightNode() == null){
+            Node left = root.getLeftNode();
+            count --;
+            return left;
+        }
+        root.setRightNode(removeMax(root.getRightNode()));
+        return root;
+    }
+
+    private void remove(int key){
+        remove(root,key);
+    }
+
+    /****
+     * 删除以 root 为根的二分搜索树中键值为 key 的节点
+     * 返回删除节点后新的二分搜索树中的根节点
+     * @param root
+     * @param key
+     * @return
+     */
+    private Node remove(Node root, int key){
+        // 包含了寻找键值key 的过程
+        if(root == null){
+            return null;
+        }
+        if(key > root.getKey()){
+            // 在右节点中把对应的 key 删除
+            // 将删除后的子树根节点返回
+            root.setRightNode(remove(root.getRightNode(),key));
+            return root;
+        }else if (key < root.getKey()){
+            root.setLeftNode(remove(root.getLeftNode(), key));
+            return root;
+        }else {
+            if(root.getLeftNode() == null){
+                return root.getRightNode();
+            }else if(root.getRightNode() == null){
+                return root.getLeftNode();
+            }{
+               if( root.getLeftNode() == null){
+                   Node rightNode = root.getRightNode();
+                   root = null;
+                   count --;
+                   return rightNode;
+               } else if(root.getRightNode() == null){
+                   Node leftNode = root.getLeftNode();
+                   root = null;
+                   count --;
+                   return leftNode;
+               } else{
+                    Node successor = minNode(root.getRightNode());
+                    successor.setRightNode(removeMin(root.getRightNode()));
+                    successor.setLeftNode(root.getLeftNode());
+                    root = null;
+                    return successor;
+               }
+            }
+        }
     }
 
     private void levelOrder(Node root){
@@ -184,14 +299,21 @@ public class BST {
         bst.insert(root, 12, "shier");
         bst.insert(root, 14, "shisi");
         bst.insert(root, 5, "wuwu");
+        bst.insert(root, 15, "shiwu");
 //        System.out.println("preOrder: ");
 //        bst.preOrder(root);
         System.out.println("levelOrder: ");
         bst.levelOrder(root);
 
-        System.out.println("minNode: " + bst.getMinNode().getString());
+        System.out.println(bst.floor(4));
 
-        System.out.println("maxNode: " + bst.getMaxNode().getString());
+//        Node newRoot = bst.remove(root,8);
+
+//        System.out.println("minNode: " + bst.getMinNode().getString());
+//
+//        System.out.println("maxNode: " + bst.getMaxNode().getString());
+
+
     }
 }
 
@@ -259,16 +381,16 @@ class Node{
         this.rightNode = rightNode;
     }
 
-    @Override
-    public String toString() {
-        return "Node{" +
-                "key=" + key +
-                ", value='" + value + '\'' +
-                ", parent=" + parent +
-                ", leftNode=" + leftNode +
-                ", rightNode=" + rightNode +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Node{" +
+//                "key=" + key +
+//                ", value='" + value + '\'' +
+//                ", parent=" + parent +
+//                ", leftNode=" + leftNode +
+//                ", rightNode=" + rightNode +
+//                '}';
+//    }
 
     public String getString(){
         return "Node{" +
