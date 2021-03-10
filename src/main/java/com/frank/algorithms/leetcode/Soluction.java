@@ -1,5 +1,9 @@
 package com.frank.algorithms.leetcode;
 
+import java.util.ArrayDeque;
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * @program: algorithms
  * @description:
@@ -17,9 +21,15 @@ class Solution {
 //            System.out.println(a);
 //        }
 
-        int[] arr = {1,3,5,6};
-        System.out.println(s.searchInsert(arr, 7));
-
+        int[] arr = {1,0,3,0,5,6};
+        int a = arr.length;
+//        System.out.println(s.searchInsert(arr, 7));
+        String str = "abdncnd";
+        char[] chars = str.toCharArray();
+        int[] charArr = new int[256];
+        charArr[chars[1]] = 1;
+        System.out.println();
+//        s.moveZeroes(arr);
     }
 
     public int[] searchRange(int[] nums, int target) {
@@ -103,5 +113,38 @@ class Solution {
         }
         return left;
 
+    }
+
+    public void moveZeroes(int[] nums) {
+        Queue<Integer> normalQueue = new LinkedList();
+        Queue<Integer> zeroQueue = new LinkedList();
+        for (int i = 0; i < nums.length; i++){
+            if(nums[i] == 0){
+                zeroQueue.add(0);
+            }else{
+                normalQueue.add(nums[i]);
+            }
+        }
+        for (int i = 0; i< nums.length; i++){
+            if (!normalQueue.isEmpty()){
+                nums[i] =  normalQueue.poll();
+                continue;
+            }
+            if (!zeroQueue.isEmpty()){
+                nums[i] = zeroQueue.poll();
+                continue;
+            }
+        }
+    }
+    public void moveZeroes1(int[] nums) {
+        int index = 0;
+        for(int i = 0; i < nums.length; i ++){
+            if(nums[i] != 0){
+                nums[index++] = nums[i];
+            }
+        }
+        for (int j = index; j < nums.length; j++){
+            nums[j] = 0;
+        }
     }
 }
