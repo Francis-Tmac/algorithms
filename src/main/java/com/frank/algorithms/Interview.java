@@ -108,11 +108,11 @@ public class Interview {
         return result;
     }
 
-    public static void main(String[] args) {
-        int[] b = new int[]{1,2,3,4,5,6,7};
-
-        int[] arr = twoSum(b,13);
-        System.out.println(arr);
+//    public static void main(String[] args) {
+//        int[] b = new int[]{1,2,3,4,5,6,7};
+//
+//        int[] arr = twoSum(b,13);
+//        System.out.println(arr);
 
 //        TreeNode node_4 = new TreeNode(4);
 //        TreeNode node_3 = new TreeNode(3, node_4, null);
@@ -140,7 +140,7 @@ public class Interview {
 //
 //        System.out.println(targetList);
 
-    }
+//    }
 
     private static List<List<Integer>> mergeList(List<List<Integer>> originList){
         int listSize = originList.size();
@@ -220,5 +220,25 @@ public class Interview {
         return array;
     }
 
+
+    public static int maxSubArray(int[] nums){
+        int pre = 0, maxAns = nums[0];
+        for(int x : nums){
+            pre= Math.max(pre + x, x);
+            maxAns = Math.max(maxAns, pre);
+        }
+        return maxAns;
+    }
+
+    public static void main(String[] args) {
+        int[] b = new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4};
+        int max = maxSubArray(b);
+
+        System.out.println(max);
+
+//
+//        int[] arr = twoSum(b, 13);
+//        System.out.println(arr);
+    }
 
 }
