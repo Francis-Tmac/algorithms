@@ -230,12 +230,18 @@ public class Interview {
         return maxAns;
     }
 
+    public static int sum(int x, int y){
+        int  z = x | y;
+        return z;
+    }
+
     public static void main(String[] args) {
-        int[] b = new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4};
-        int max = maxSubArray(b);
+//        int[] b = new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4};
+//        int max = maxSubArray(b);
+//
+//        System.out.println(max);
 
-        System.out.println(max);
-
+        System.out.println(sum(3,2));
 //
 //        int[] arr = twoSum(b, 13);
 //        System.out.println(arr);
