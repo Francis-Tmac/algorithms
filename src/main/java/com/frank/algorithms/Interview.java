@@ -46,19 +46,6 @@ public class Interview {
         return arr;
     }
 
-    public static int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> hashMap = new HashMap<>();
-        for(int i = 0; i < nums.length; i++){
-            if(hashMap.containsKey(target - nums[i])){
-                return new int[]{hashMap.get(target - nums[i]), i};
-            }
-            hashMap.put(nums[i], i);
-        }
-        return null;
-    }
-
-
-
     static class TreeNode {
 
         private int val;
@@ -220,6 +207,21 @@ public class Interview {
         return array;
     }
 
+    public  static int[] twoSum2(int[] nums, int target) {
+        HashMap map = new HashMap();
+        for(int i = 0; i < nums.length; i++){
+            map.put(nums[i],i);
+        }
+        for(int i = 0; i < nums.length; i++){
+            Integer j = target - nums[i];
+            if(map.get(j) != null){
+                if(i != (int)map.get(j)){
+                    return new int[]{i,(int)map.get(j)};
+                }
+            }
+        }
+        return null;
+    }
 
     public static int maxSubArray(int[] nums){
         int pre = 0, maxAns = nums[0];
@@ -241,10 +243,64 @@ public class Interview {
 //
 //        System.out.println(max);
 
-        System.out.println(sum(3,2));
+        int[] a= new int[]{-1,0,1,2,-1,-4};
+        List<List<Integer>>  b = threeSum(a);
+        b.get(1);
+//        System.out.println(sum(3,2));
 //
 //        int[] arr = twoSum(b, 13);
 //        System.out.println(arr);
+    }
+
+    public static int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> hashMap = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            if(hashMap.containsKey(target - nums[i])){
+                return new int[]{hashMap.get(target - nums[i]), i};
+            }
+            hashMap.put(nums[i], i);
+        }
+        return null;
+    }
+
+    public static List<List<Integer>> threeSum(int[] nums) {
+        if(nums.length == 0 || nums.length == 1){
+            return null;
+        }
+        Arrays.sort(nums);
+        List<List<Integer>> targetList = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if(nums[i] > 0){
+                targetList.add(new ArrayList<>());
+                return targetList;
+            }
+            if(i > 0 && nums[i] == nums[i - 1]){
+                continue;
+            }
+            int j = i + 1;
+            int k = nums.length -1 ;
+            int current = nums[i];
+            while ( j < k){
+                if(current + nums[j] + nums[k] == 0){
+                    List<Integer> list = Arrays.asList(current, nums[j], nums[k]);
+                    targetList.add(list);
+                    while (j < k && nums[j] == nums[j+1]){
+                        j++;
+                    }
+                    while (j < k && nums[k] == nums[k-1]){
+                        k--;
+                    }
+                    k--;
+                    j++;
+                }else if(current + nums[j] + nums[k] > 0){
+                    k--;
+                }else {
+                    j++;
+                }
+            }
+
+        }
+        return targetList;
     }
 
 }
