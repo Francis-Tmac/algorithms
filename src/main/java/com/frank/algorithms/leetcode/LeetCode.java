@@ -1,6 +1,10 @@
 package com.frank.algorithms.leetcode;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.List;
 
 /**
  * {@link  }
@@ -135,7 +139,42 @@ public class LeetCode {
 //        int[] b = new int[]{2,0,1};
         int[] b = new int[]{4,2,4,0,0,3,0,5,1,0};
 //        int[] b = new int[]{2,1};
-        moveZeroes(b);
-        System.out.println(b[0]);
+//        moveZeroes(b);
+//        System.out.println(b[0]);
+        int[] arr = new int[]{1,2,3};
+        List<List<Integer>> list = permute(arr);
+        System.out.println(list.get(0));
     }
+
+    // 46.全排列
+    public static List<List<Integer>> permute(int[] nums) {
+        int length = nums.length;
+        List<List<Integer>> result = new ArrayList<>();
+        if(length == 0){
+            return result;
+        }
+        Deque<Integer> path = new ArrayDeque<>();
+        int depth = 0;
+        boolean[] used = new boolean[length];
+        dfs(nums,result,length,path,depth,used);
+        return result;
+    }
+
+    private static void dfs(int[] nums, List<List<Integer>> result,int length, Deque<Integer> path, int depth, boolean[] used) {
+        if(depth == length){
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 0; i < length; i++) {
+            if(used[i]){
+                continue;
+            }
+            path.addLast(nums[i]);
+            used[i] = true;
+            dfs(nums, result, length, path, depth + 1, used);
+            path.removeLast();
+            used[i] = false;
+        }
+    }
+
 }
