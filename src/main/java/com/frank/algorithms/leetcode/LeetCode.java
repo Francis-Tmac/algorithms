@@ -154,15 +154,15 @@ public class LeetCode {
 //        System.out.println(cur.val);
 
 //        int[] b = new int[]{2,0,1};
-        int[] b = new int[]{4, 2, 4, 0, 0, 3, 0, 5, 1, 0};
+//        int[] b = new int[]{4, 2, 4, 0, 0, 3, 0, 5, 1, 0};
 //        int[] b = new int[]{2,1};
 //        moveZeroes(b);
 //        System.out.println(b[0]);
-        int[] arr = new int[]{1, 2, 3};
+//        int[] arr = new int[]{1, 2, 3};
 //        List<List<Integer>> list = permute(arr);
 //        System.out.println(list.get(0));
-
-        List<String> list = letterCombinations("234");
+        LeetCode leetCode = new LeetCode();
+        List<String> list = leetCode.letterCombinations2("234");
         System.out.println(list.get(0));
     }
 
@@ -216,17 +216,18 @@ public class LeetCode {
     }
 
     private static void combinationDFS(char[] numsArr, int length, int depth, boolean[] used,
-            Deque<Character> path, List<String> resultList, Map<Integer, List<Character>> map,List<Character> usedChar) {
+            Deque<Character> path, List<String> resultList, Map<Integer, List<Character>> map,
+            List<Character> usedChar) {
         if (depth >= length) {
             StringBuilder stringBuilder = new StringBuilder();
-            for(Character chara : path){
+            for (Character chara : path) {
                 stringBuilder.append(chara);
             }
             resultList.add(stringBuilder.toString());
-            return ;
+            return;
         }
         for (int i = 0; i < length; i++) {
-            if(used[i]){
+            if (used[i]) {
                 continue;
             }
             List<Character> list = map.get(Integer.valueOf(String.valueOf(numsArr[i])));
@@ -255,4 +256,54 @@ public class LeetCode {
         return map;
     }
 
+    /***
+     * 17. 电话号码的字母组合
+     * @param digits
+     * @return
+     */
+    public List<String> letterCombinations2(String digits) {
+        if (digits == null || digits.length() == 0 ) {
+            return resultList;
+        }
+        char[] charArr = digits.toCharArray();
+        recursion(charArr, resultList, new StringBuilder(), 0);
+        return resultList;
+    }
+    List<String> resultList = new ArrayList<>();
+    private String[] getChar(char c) {
+        switch (c) {
+            case '2':
+                return new String[]{"a", "b", "c"};
+            case '3':
+                return new String[]{"d", "e", "f"};
+            case '4':
+                return new String[]{"g", "h", "i"};
+            case '5':
+                return new String[]{"j", "k", "l"};
+            case '6':
+                return new String[]{"m", "n", "o"};
+            case '7':
+                return new String[]{"p", "q", "r", "s"};
+            case '8':
+                return new String[]{"t", "u", "v"};
+            case '9':
+                return new String[]{"w", "x", "y", "z"};
+            default:
+                return new String[]{};
+        }
+
+    }
+
+    private void recursion(char[] charArr, List<String> resultList, StringBuilder path, int depth) {
+        if (depth == charArr.length) {
+            resultList.add( new String(path));
+            return;
+        }
+        String[] vars = getChar(charArr[depth]);
+        for (int i = 0; i < vars.length; i++) {
+            path.append(vars[i]);
+            recursion(charArr, resultList, path, depth + 1);
+            path.deleteCharAt(path.length() - 1);
+        }
+    }
 }
