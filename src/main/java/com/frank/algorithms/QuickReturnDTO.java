@@ -16,4 +16,5 @@ public class QuickReturnDTO {
     private Integer right;
 
 
+
 }
