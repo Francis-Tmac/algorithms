@@ -37,6 +37,71 @@ public class LeetCode {
         }
     }
 
+    public ListNode mergeKLists(ListNode[] lists) {
+        int length = lists.length;
+        if(length == 0){
+            return null;
+        }
+        if(length == 1){
+            return lists[0];
+        }
+        if(length == 2){
+            return mergeTwoLists(lists[0],lists[1]);
+        }
+        return _mergeSort(lists, 0, length - 1);
+
+    }
+
+    private ListNode _mergeSort(ListNode[] lists, int left, int right){
+        if(left == right){
+            return lists[right];
+        }
+
+        int mid = (right - left)/2 + left;
+        // [left,mid] , (mid, right]
+        ListNode leftNode = _mergeSort( lists, left, mid);
+        ListNode rightNode = _mergeSort( lists,mid+1, right);
+        return mergeTwoLists(leftNode, rightNode);
+    }
+
+
+
+
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if(l1 == null && l2 == null){
+            return null;
+        }
+        ListNode head = new ListNode();
+        mergeList(l1,l2,head);
+        return head.next;
+    }
+
+    private void mergeList(ListNode l1, ListNode l2,ListNode cur){
+
+        while (true){
+            if(l1 == null && l2 == null){
+                break;
+            }
+            if(l1 == null){
+                cur.next = l2;
+                break;
+            }else if (l2 == null){
+                cur.next = l1;
+                break;
+            }
+            if(l1.val > l2.val){
+                cur.next = l2;
+                cur = cur.next;
+                l2 = l2.next;
+            }else {
+                cur.next = l1;
+                cur = cur.next;
+                l1 = l1.next;
+            }
+        }
+    }
+
+
     public ListNode removeNthFromEndSinglePoint(ListNode head, int n) {
 
         int size = 0;
@@ -299,6 +364,7 @@ public class LeetCode {
             resultList.add( new String(path));
             return;
         }
+
         String[] vars = getChar(charArr[depth]);
         for (int i = 0; i < vars.length; i++) {
             path.append(vars[i]);
@@ -306,4 +372,6 @@ public class LeetCode {
             path.deleteCharAt(path.length() - 1);
         }
     }
+
 }
+
