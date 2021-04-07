@@ -226,9 +226,10 @@ public class LeetCode {
 //        int[] arr = new int[]{1, 2, 3};
 //        List<List<Integer>> list = permute(arr);
 //        System.out.println(list.get(0));
-        LeetCode leetCode = new LeetCode();
-        List<String> list = leetCode.letterCombinations2("234");
-        System.out.println(list.get(0));
+//        LeetCode leetCode = new LeetCode();
+//        List<String> list = leetCode.letterCombinations2("234");
+//        System.out.println(list.get(0));
+
     }
 
     // 46.全排列
@@ -371,6 +372,21 @@ public class LeetCode {
             recursion(charArr, resultList, path, depth + 1);
             path.deleteCharAt(path.length() - 1);
         }
+    }
+
+    /***
+     * 55. 跳跃游戏
+     * 给定一个非负整数数组 nums ，你最初位于数组的 第一个下标 。
+     *
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     *
+     * 判断你是否能够到达最后一个下标。
+     * @param nums
+     * @return
+     */
+    public boolean canJump(int[] nums) {
+
+        return false;
     }
 
 }
