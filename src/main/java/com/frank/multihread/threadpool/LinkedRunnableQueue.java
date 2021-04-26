@@ -34,6 +34,9 @@ public class LinkedRunnableQueue implements RunnableQueue {
                 denyPolicy.reject(runnable,threadPool);
             } else {
                 runnableList.addLast(runnable);
+                /***
+                 * 当任务队列中存在任务后通知 waitSet 中的线程去竞争任务
+                 ***/
                 runnableList.notifyAll();
             }
         }
@@ -42,6 +45,9 @@ public class LinkedRunnableQueue implements RunnableQueue {
     @Override
     public Runnable take(){
         synchronized (runnableList){
+            /***
+             * 重要：当任务队列中没有任务时会一直阻塞在此，等待 notify
+             ***/
             while (runnableList.isEmpty()){
                 try {
                     runnableList.wait();
