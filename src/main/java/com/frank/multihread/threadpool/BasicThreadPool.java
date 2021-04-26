@@ -41,7 +41,7 @@ public class BasicThreadPool extends Thread implements ThreadPool {
     private final TimeUnit timeUnit;
 
     public BasicThreadPool(int initSize, int maxSize, int coreSize,int queueSize) {
-        this(initSize,maxSize,coreSize,DEFAULT_THREAD_FACTORY,queueSize,DEFAULT_DENY_POLICY,10,TimeUnit.SECONDS);
+        this(initSize,maxSize,coreSize,DEFAULT_THREAD_FACTORY,queueSize,DEFAULT_DENY_POLICY,5,TimeUnit.SECONDS);
     }
 
     public BasicThreadPool(int initSize, int maxSize, int coreSize,
@@ -90,7 +90,7 @@ public class BasicThreadPool extends Thread implements ThreadPool {
 
     @Override
     public void run() {
-        while(!isShutDown && isInterrupted()){
+        while(!isShutDown && !isInterrupted()){
             try{
                timeUnit.sleep(keepAliveTime);
             }catch (InterruptedException e){
@@ -123,43 +123,63 @@ public class BasicThreadPool extends Thread implements ThreadPool {
                 }
             }
         }
-
-
     }
 
     @Override
     public void shutDown() {
-
+        synchronized (this){
+            if(isShutDown) {return;}
+            isShutDown = true;
+            threadQueue.forEach(threadTask -> {
+                threadTask.internalTask.stop();
+                threadTask.thread.interrupt();
+            });
+            this.interrupt();
+        }
     }
 
     @Override
     public int getInitSize() {
-        return 0;
+        if(isShutDown){
+            throw new IllegalArgumentException("the thread pool is destroy");
+        }
+        return this.initSize;
     }
 
     @Override
     public int getMaxSize() {
-        return 0;
+        if(isShutDown){
+            throw new IllegalArgumentException("the thread pool is destroy");
+        }
+        return this.maxSize;
     }
 
     @Override
     public int getCoreSize() {
-        return 0;
+        if(isShutDown){
+            throw new IllegalArgumentException("the thread pool is destroy");
+        }
+        return this.coreSize;
     }
 
     @Override
     public int getQueueSize() {
-        return 0;
+        if(isShutDown){
+            throw new IllegalArgumentException("the thread pool is destroy");
+        }
+        return runnableQueue.size();
     }
 
     @Override
     public int getActiveCount() {
-        return 0;
+        synchronized (this){
+            return this.activeCount;
+        }
     }
 
     @Override
     public boolean isShutDown() {
-        return false;
+        return this.isShutDown;
     }
 
     private static class ThreadTask{

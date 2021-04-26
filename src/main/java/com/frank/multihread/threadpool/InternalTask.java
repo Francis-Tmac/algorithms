@@ -28,9 +28,6 @@ public class InternalTask implements Runnable {
                 running = false;
                 break;
             }
-
-            Runnable task = runnableQueue.take();
-            task.run();
         }
     }
     // 停止当前任务
