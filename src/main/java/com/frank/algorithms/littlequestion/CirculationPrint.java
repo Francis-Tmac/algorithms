@@ -35,6 +35,9 @@ class Circulation{
     Condition conditionB = lock.newCondition();
     Condition conditionC = lock.newCondition();
 
+    /***
+     * 完全可以不适用 flag 做状态控制
+     */
     volatile int flag = 1;
 
     public void printA(int count){
