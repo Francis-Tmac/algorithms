@@ -54,7 +54,6 @@ public class ConditionCirclePrint {
                 e.printStackTrace();
             } finally {
                 lock.unlock();
-                System.out.println("执行 lock.unlock() ------A");
             }
         }
     }
@@ -75,7 +74,6 @@ public class ConditionCirclePrint {
                 e.printStackTrace();
             } finally {
                 lock.unlock();
-                System.out.println("执行 lock.unlock() ------B");
             }
         }
     }
@@ -95,7 +93,6 @@ public class ConditionCirclePrint {
                 e.printStackTrace();
             } finally {
                 lock.unlock();
-                System.out.println("执行 lock.unlock() ------C");
             }
         }
     }
