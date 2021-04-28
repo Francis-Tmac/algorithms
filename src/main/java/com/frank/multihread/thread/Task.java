@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * {@link  }
@@ -48,17 +51,18 @@ public  class Task implements Runnable {
             Thread t = new Thread(new Task());
             t.start();
         }
-//        TimeUnit.SECONDS.sleep(3);
-//        Thread t = waitList.remove(0);
-//        System.out.println("dddddddddddd");
-//        LockSupport.unpark(t);
-//        ExecutorService executorService = Executors.newSingleThreadExecutor();
-//        executorService.shutdown();
-//        executorService.execute(new Task());
-//        executorService.
+        Lock lock = new ReentrantLock();
+        Condition c = lock.newCondition();
+        TimeUnit.SECONDS.sleep(3);
+        Thread t = waitList.remove(0);
+        System.out.println("dddddddddddd");
+        LockSupport.unpark(t);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Executors.newCachedThreadPool();
+        executorService.shutdown();
+        executorService.execute(new Task());
 
 
 
     }
-
 }
