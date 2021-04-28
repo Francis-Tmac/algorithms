@@ -31,7 +31,9 @@ public class CirclePrint {
         Thread thread_a = new Thread(()->{run("A",3,1, 3);});
         Thread thread_b = new Thread(()->{run("B",3,2, 3);});
         Thread thread_c = new Thread(()->{run("C",3,3, 3);});
-
+        thread_a.setName("thread_a");
+        thread_b.setName("thread_b");
+        thread_c.setName("thread_c");
         thread_a.start();
         thread_b.start();
         thread_c.start();
@@ -39,7 +41,7 @@ public class CirclePrint {
     }
 
     /***
-     * 还未能成功循环打印
+     *
      ***/
     private void run(String value, int count, int cur_flag, int max){
         for(;;){
@@ -47,18 +49,22 @@ public class CirclePrint {
                 try {
                     if (flag.get() != cur_flag) {
                         MONITOR.wait();
-                    }
-                    System.out.println(value);
-                    if(flag.getAndIncrement() == max){
-                        flag.set(1);
-                    }
-                    MONITOR.notifyAll();
-                    count--;
-                    if(count <= 0){
-                        break;
+                    }else {
+                        System.out.println(
+                                "threadName: " + Thread.currentThread().getName() + " value: "
+                                        + value);
+                        if (flag.getAndIncrement() == max) {
+                            flag.set(1);
+                        }
+                        count--;
+                        if (count <= 0) {
+                            break;
+                        }
                     }
                 } catch (InterruptedException e){
 
+                }finally {
+                    MONITOR.notifyAll();
                 }
             }
         }
