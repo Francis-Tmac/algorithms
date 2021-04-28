@@ -1,5 +1,7 @@
 package com.frank.multihread.thread;
 
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 
 /**
@@ -15,12 +17,56 @@ public class CirclePrint {
 
     private Node tail;
 
+    private Object MONITOR = new Object();
+
+    private volatile AtomicInteger flag  = new AtomicInteger(1);
+
     public static void main(String[] args) {
         CirclePrint c = new CirclePrint();
-        c.setLinked();
+//        c.setLinked();
+        c.circleMonitor();
+    }
+
+    private void circleMonitor(){
+        Thread thread_a = new Thread(()->{run("A",3,1, 3);});
+        Thread thread_b = new Thread(()->{run("B",3,2, 3);});
+        Thread thread_c = new Thread(()->{run("C",3,3, 3);});
+
+        thread_a.start();
+        thread_b.start();
+        thread_c.start();
 
     }
 
+    /***
+     * 还未能成功循环打印
+     ***/
+    private void run(String value, int count, int cur_flag, int max){
+        for(;;){
+            synchronized (MONITOR){
+                try {
+                    if (flag.get() != cur_flag) {
+                        MONITOR.wait();
+                    }
+                    System.out.println(value);
+                    if(flag.getAndIncrement() == max){
+                        flag.set(1);
+                    }
+                    MONITOR.notifyAll();
+                    count--;
+                    if(count <= 0){
+                        break;
+                    }
+                } catch (InterruptedException e){
+
+                }
+            }
+        }
+    }
+
+    /***
+     * 维护一个双向链表
+     */
     private void setLinked() {
         int count = 3;
         Node node_D = new Node("D", 5);
@@ -42,6 +88,11 @@ public class CirclePrint {
         node_A.thread.start();
     }
 
+    /***
+     * 只有头结点才可以打印
+     * @param value
+     * @return
+     */
     private Thread getThread(String value) {
         return new Thread(() -> {
             for (; ; ) {
