@@ -23,4 +23,31 @@ public class AOPTest {
         MathCalculator mathCalculator = applicationContext.getBean(MathCalculator.class);
         mathCalculator.div(4,2);
     }
+
+    @Test
+    public void test_2(){
+        String a = "23412hsfhsgjyekeasdfasdfjkghjkgdhfgshrthrthfghdfghsewtwecwe";
+        String b = "23412hsfhsgjyekeasdfasdfjkghjkgdhfgshrthrthfghdfghsewtwecwe";
+        String c = new String("23412hsfhsgjyekeasdfasdfjkghjkgdhfgshrthrthfghdfghsewtwecwe");
+        String d = new String("23412hsfhsgjyekeasdfasdfjkghjkgdhfgshrthrthfghdfghsewtwecwe");
+        System.out.println(System.identityHashCode(a));
+        System.out.println(System.identityHashCode(b));
+        System.out.println(System.identityHashCode(c));
+        System.out.println(System.identityHashCode(d));
+    }
+
+    @Test
+    public void test_3(){
+//        String field = "test";
+//        String methodName = "get" + ;
+//        System.out.println(methodName);
+    }
+
+    public String upperCase(String str) {
+        char[] ch = str.toCharArray();
+        if (ch[0] >= 'a' && ch[0] <= 'z') {
+            ch[0] = (char) (ch[0] - 32);
+        }
+        return new String(ch);
+    }
 }

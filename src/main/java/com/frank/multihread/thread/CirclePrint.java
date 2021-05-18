@@ -23,8 +23,8 @@ public class CirclePrint {
 
     public static void main(String[] args) {
         CirclePrint c = new CirclePrint();
-//        c.setLinked();
-        c.circleMonitor();
+        c.setLinked();
+//        c.circleMonitor();
     }
 
     private void circleMonitor(){
