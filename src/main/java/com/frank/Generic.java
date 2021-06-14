@@ -2,6 +2,10 @@ package com.frank;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * {@link  }
@@ -33,4 +37,42 @@ public class Generic<T> {
 //        list.add(new Integer(3));//编译错误
 
          }
+
+    public static void main(String[] args) throws Exception{
+//        fib(5);
+//        ExecutorService service = Executors.newCachedThreadPool();
+//
+//        ExecutorService service1 = Executors.newFixedThreadPool(3);
+//
+//        ExecutorService service2 = Executors.newSingleThreadExecutor();
+//
+//        ExecutorService service3 = Executors.newScheduledThreadPool(4);
+
+        Queue<Integer> queue = new ArrayBlockingQueue<>(5);
+        queue.offer(1);
+        queue.offer(2);
+        queue.offer(3);
+        System.out.println(queue.poll());
+
+    }
+
+    public static int fib(int n) {
+        if(n == 0){
+            return 0;
+        }
+        int[] arr = new int[n+1];
+        int i = 0;
+
+        while(i <= n){
+            if(i == 0){
+                arr[i] = 0;
+            }else if(i == 1){
+                arr[i] = 1;
+            }else{
+                arr[i] = arr[i-1] + arr[i-2];
+            }
+            i++;
+        }
+        return arr[n];
+    }
 }
