@@ -95,6 +95,7 @@ public class MinimumTotal {
         List<int[]> targetList = new ArrayList();
         for(int j = i; j > 0; j--){
             List<Integer> list = new ArrayList();
+            int[] aux = list.stream().mapToInt(Integer::intValue).toArray();
             int result = 0;
             for(int x = 1; x <= j; x++){
                 result += x;
