@@ -1,10 +1,15 @@
 package com.frank;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import java.lang.annotation.Target;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * {@link  }
@@ -16,6 +21,11 @@ import java.util.Queue;
 public class Algorithms {
 
 
+    public static void main(String[] args) {
+        ReentrantLock lock = new ReentrantLock();
+        lock.tryLock();
+        Condition condition = lock.newCondition();
+    }
 
     private String getCommonPreChar(List<String> stringList){
         Queue<Character> queue =new ArrayDeque();

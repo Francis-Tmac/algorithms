@@ -1,5 +1,7 @@
 package com.frank.algorithms;
 
+import com.frank.algorithms.leetcode.LeetCode;
+import com.frank.algorithms.leetcode.LeetCode.ListNode;
 import java.util.*;
 
 /**
@@ -88,6 +90,48 @@ public class Interview {
         }
         return result;
     }
+    private List<List<Integer>> levelTree(TreeNode node){
+        List<List<Integer>> target = new ArrayList<>();
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.addLast(node);
+        // flag 为true 顺序打印
+        boolean flag = true;
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            List<Integer>  list = new ArrayList<>();
+            if(flag){
+                for (int i = 0; i < size; i++) {
+                    TreeNode temp = queue.remove();
+                    list.add(temp.val);
+                    if(temp.left != null){
+                        queue.addLast(temp.left);
+                    }
+                    if(temp.right != null){
+                        queue.addLast(temp.right);
+                    }
+                }
+                flag = false;
+            }else {
+                Stack<TreeNode> stack = new Stack<>();
+                for (int i = 0; i < size; i++) {
+                    stack.push(queue.remove());
+                }
+                for (int i = 0; i < size; i++) {
+                    TreeNode temp = stack.pop();
+                    list.add(temp.val);
+                    if(temp.left != null){
+                        queue.addLast(temp.left);
+                    }
+                    if(temp.right != null){
+                        queue.addLast(temp.right);
+                    }
+                }
+                flag = true;
+            }
+            target.add(list);
+        }
+        return target;
+    }
 
     private static void levelArray(TreeNode node){
         Queue<TreeNode> queue = new LinkedList<>();
@@ -123,6 +167,26 @@ public class Interview {
 
     }
 
+    public static int cuttingRope(int n) {
+        int[] arr = new int[n + 1];
+        arr[2] = 1;
+        for (int i = 3; i <= n; i++) {
+
+            for(int j = 2; j < i/2 + 1; j++){
+                arr[i] = Math.max(arr[i],  Math.max(i - j, arr[i - j]) * j);
+            }
+        }
+        return arr[n];
+    }
+
+    public int maxValue(int[][] values) {
+      return 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(cuttingRope(7));
+    }
+
     private static void midPrintStack(TreeNode node){
         Deque<TreeNode>  stack = new LinkedList<>();
         stack.push(node);
@@ -142,6 +206,47 @@ public class Interview {
             }
             temp = null;
         }
+    }
+
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+       if(l1 == null){
+           return l2;
+       }else if(l2 == null){
+           return l1;
+       }
+       if(l1.val < l2.val){
+           l1.next = mergeTwoLists(l1.next, l2);
+           return l1;
+       }else {
+           l2.next = mergeTwoLists(l1, l2.next);
+           return l2;
+       }
+
+    }
+//    给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+//
+//    百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。
+
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == p){
+            return p;
+        }else if(root == q){
+            return q;
+        }else if (root == null){
+            return null;
+        }
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if(left != null && right != null){
+            return root;
+        }else if(left != null){
+            return left;
+        } else {
+            return right;
+        }
+
+
     }
 
     private static void lastPrintStack(TreeNode node){
@@ -590,8 +695,9 @@ public class Interview {
     public static int findKthLargest(int[] nums, int k) {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>(new Comparator<Integer>() {
             @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1 - o2;
+            public int compare(Integer curVale, Integer parentVale) {
+                // result < 0 时交换
+                return curVale - parentVale;
             }
         });
         for(int i = 0; i < k; i++){
@@ -610,8 +716,8 @@ public class Interview {
 
     }
 
-    public static void main(String[] args) {
-        System.out.println(findKthLargest(new int[]{3,2,1,5,6,4},2));
+    public static void main5(String[] args) {
+        System.out.println(findKthLargest(new int[]{3,2,1,5,6,4},4));
     }
 
     public static void main3(String[] args) {
