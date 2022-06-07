@@ -15,6 +15,7 @@ public class Test {
         String jar2 = "/Users/frank/Notes/algorithms/src/main/resources/jar2.0";
 
         JarLoader jarLoader = new JarLoader(new String[]{jar1});
+        // 可以不用转换，直接调用jarLoader.loadClass
         ClassLoaderSwapper classLoaderSwapper = ClassLoaderSwapper.newCurrentThreadClassLoaderSwapper();
         classLoaderSwapper.setCurrentThreadClassLoader(jarLoader);
         Class<?> aClass = Thread.currentThread().getContextClassLoader().loadClass("TestClass");

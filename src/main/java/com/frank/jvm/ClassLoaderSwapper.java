@@ -7,6 +7,7 @@ package com.frank.jvm;
  * 就需要脱离当前classLoader去加载这些jar包，执行完成后，又退回到原来classLoader上继续执行接下来的代码
  */
 public final class ClassLoaderSwapper {
+
     private ClassLoader storeClassLoader = null;
 
     private ClassLoaderSwapper() {
