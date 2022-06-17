@@ -30,6 +30,7 @@ public class InternalTask implements Runnable {
             }
         }
     }
+
     // 停止当前任务
     public void stop(){
         this.running = false;

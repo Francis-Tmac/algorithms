@@ -52,4 +52,37 @@ public class Tiger {
 
     }
 
+    public String longestPalindrome(String s) {
+        int length = s.length();
+        int start = 0, end = 0;
+        for(int i = 0 ; i < length; i++){
+            int len1 = extendAlg(s, i, i);
+            int len2 = extendAlg(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if(len > (end - start)){
+                end = i + len/2;
+                start = i - (len - 1)/2;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+
+    private int extendAlg(String s, int left, int right){
+        while(left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)){
+            right--;
+            left++;
+        }
+        return right - left -1;
+    }
+
+    public int maxSubArray(int[] nums) {
+        int curMax = nums[0], resMax = nums[0];
+        for(int i = 1; i < nums.length; i++){
+            curMax = Math.max(curMax + nums[i], nums[i]);
+            resMax = Math.max(curMax, resMax);
+        }
+        return resMax;
+    }
+
+
 }
