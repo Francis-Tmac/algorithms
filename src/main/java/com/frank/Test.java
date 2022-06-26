@@ -519,11 +519,72 @@ public class Test {
         ListNode virtualNode = new ListNode(-1, head);
         ListNode preNode = virtualNode;
         head = preNode;
+        ListNode nextNode;
         int curCount = 0;
         while(head != null){
-            if()
+            if(curCount + 1 == left){
+                preNode = head;
+                head = head.next;
+                curCount++;
+            }else if (curCount == right){
+                nextNode = head.next;
+                head.next = null;
+                ListNode tempHead = preNode.next;
+                preNode.next = reversedNode(tempHead);
+                tempHead.next = nextNode;
+                break;
+            }else{
+                head = head.next;
+                curCount++;
+            }
         }
+        return virtualNode.next;
+    }
 
+    public ListNode reversedNode(ListNode head){
+        if(head.next == null){
+            return head;
+        }
+        ListNode reverseHead = reversedNode(head.next);
+        head.next.next = head;
+        head.next = null;
+        return reverseHead;
+    }
+
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        dfsSideView(root, list, 0);
+        return list;
+    }
+
+    public void dfsSideView(TreeNode root, List<Integer> list, int level){
+        if(root == null){
+            return;
+        }else if(list.size() < level + 1){
+            list.add(root.val);
+            dfsSideView(root.right, list, level + 1);
+            dfsSideView(root.left, list, level + 1);
+        }else {
+            dfsSideView(root.right, list, level + 1);
+            dfsSideView(root.left, list, level + 1);
+        }
+    }
+
+    public int lengthOfLIS(int[] nums) {
+        int length = nums.length;
+        int[] dp = new int[length];
+        int max = 1;
+        dp[0] = 1;
+        for(int i = 1; i < length; i++){
+            dp[i] = 1;
+            for(int j = 0; j < i; j++){
+                if(nums[i] > nums[j]){
+                    dp[i] = Math.max(dp[i],dp[j] + 1);
+                }
+            }
+            max = Math.max(max, dp[i]);
+        }
+        return max;
     }
 
     public static void main(String[] args) {
@@ -561,7 +622,21 @@ public class Test {
                 {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}};
 
-        int result = test.maxAreaOfIsland(grid2);
+        TreeNode t_1 = new TreeNode(1);
+        TreeNode t_2 = new TreeNode(2);
+        TreeNode t_3 = new TreeNode(3);
+        TreeNode t_4 = new TreeNode(4);
+        TreeNode t_5 = new TreeNode(5);
+        TreeNode t_6 = new TreeNode(6);
+        TreeNode t_7 = new TreeNode(7);
+        t_1.left = t_2;
+        t_1.right = t_3;
+        t_3.right = t_4;
+        t_2.left = t_5;
+        t_5.left = t_6;
+        t_6.right = t_7;
+        List<Integer> result =  test.rightSideView(t_1);
+//        int result = test.maxAreaOfIsland(grid2);
         System.out.println(JSON.toJSONString(result));
     }
 
