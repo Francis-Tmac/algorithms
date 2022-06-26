@@ -1,6 +1,5 @@
 package com.frank;
 
-import lombok.Data;
 
 /**
  * @author fukangyang
