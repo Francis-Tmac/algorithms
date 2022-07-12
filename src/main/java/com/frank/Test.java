@@ -587,6 +587,85 @@ public class Test {
         return max;
     }
 
+
+
+
+
+
+
+
+
+
+
+    private String procString(String s){
+        StringBuilder result = new StringBuilder();
+        Stack<Integer> numStack = new Stack();
+        Stack<String> strStack = new Stack();
+        char[] charArr = s.toCharArray();
+        int length = charArr.length;
+        String tempStr = "";
+        for(int i = 0; i < length; i++){
+            // 0 - 10 之间入数字栈
+            if('0' < charArr[i] && charArr[i] <= '9'){
+                numStack.push(charArr[i] - '0');
+                if(tempStr != ""){
+                    strStack.push(tempStr);
+                    tempStr = "";
+                }
+            }else if ('a' <= charArr[i] && charArr[i] <= 'z'){
+                tempStr = tempStr + charArr[i];
+            }else if (')' == charArr[i]){
+                if(numStack.size() == 0 && strStack.size() == 0){
+                    continue;
+                }
+                strStack.push(tempStr);
+                tempStr = strStack.pop();
+                System.out.println(numStack.size() + " strStack size: " + strStack.size());
+                String newString = algString(numStack.pop(), tempStr);
+
+                while(!strStack.isEmpty()){
+                    newString = strStack.pop() + newString;
+                    newString = algString(numStack.pop(), newString);
+                }
+                tempStr = "";
+                result.append(newString);
+            }else {
+                continue;
+            }
+        }
+        return result.toString();
+    }
+
+    private String algString(Integer num, String s){
+        System.out.println(num + " s : " + s);
+        StringBuilder result = new StringBuilder();
+        for(int i = 0 ; i < num; i++){
+            result.append(s);
+        }
+        System.out.println(result);
+        return result.toString();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void main(String[] args) {
         int[] arr = new int[]{4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3};
         char grid[][] = {
@@ -723,6 +802,9 @@ public class Test {
             nums[to] = temp;
         }
     }
+
+
+
 
 
 }
