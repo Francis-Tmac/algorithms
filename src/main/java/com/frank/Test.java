@@ -50,6 +50,7 @@ public class Test {
     }
 
 
+
     public List<TreeNode> findMinPathNode(TreeNode root) {
         this.findNodePath(root, 0);
         return map.get(minPath);
@@ -234,13 +235,15 @@ public class Test {
 
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (map.containsKey(target - nums[i])) {
+        int length = nums.length;
+        for(int i = 0; i < length; i++){
+            if(map.get(target - nums[i]) != null){
                 return new int[]{i, map.get(target - nums[i])};
+            }else{
+                map.put(nums[i],i);
             }
-            map.put(nums[i], i);
         }
-        return new int[]{};
+        return;
     }
 
     public List<List<Integer>> threeSum(int[] nums) {
@@ -248,7 +251,6 @@ public class Test {
             return null;
         }
         Arrays.sort(nums);
-
         Set<List<Integer>> set = new HashSet<>();
         int length = nums.length;
         for (int i = 0; i < length - 2; i++) {
@@ -521,19 +523,19 @@ public class Test {
         head = preNode;
         ListNode nextNode;
         int curCount = 0;
-        while(head != null){
-            if(curCount + 1 == left){
+        while (head != null) {
+            if (curCount + 1 == left) {
                 preNode = head;
                 head = head.next;
                 curCount++;
-            }else if (curCount == right){
+            } else if (curCount == right) {
                 nextNode = head.next;
                 head.next = null;
                 ListNode tempHead = preNode.next;
                 preNode.next = reversedNode(tempHead);
                 tempHead.next = nextNode;
                 break;
-            }else{
+            } else {
                 head = head.next;
                 curCount++;
             }
@@ -541,8 +543,8 @@ public class Test {
         return virtualNode.next;
     }
 
-    public ListNode reversedNode(ListNode head){
-        if(head.next == null){
+    public ListNode reversedNode(ListNode head) {
+        if (head.next == null) {
             return head;
         }
         ListNode reverseHead = reversedNode(head.next);
@@ -557,14 +559,14 @@ public class Test {
         return list;
     }
 
-    public void dfsSideView(TreeNode root, List<Integer> list, int level){
-        if(root == null){
+    public void dfsSideView(TreeNode root, List<Integer> list, int level) {
+        if (root == null) {
             return;
-        }else if(list.size() < level + 1){
+        } else if (list.size() < level + 1) {
             list.add(root.val);
             dfsSideView(root.right, list, level + 1);
             dfsSideView(root.left, list, level + 1);
-        }else {
+        } else {
             dfsSideView(root.right, list, level + 1);
             dfsSideView(root.left, list, level + 1);
         }
@@ -575,11 +577,11 @@ public class Test {
         int[] dp = new int[length];
         int max = 1;
         dp[0] = 1;
-        for(int i = 1; i < length; i++){
+        for (int i = 1; i < length; i++) {
             dp[i] = 1;
-            for(int j = 0; j < i; j++){
-                if(nums[i] > nums[j]){
-                    dp[i] = Math.max(dp[i],dp[j] + 1);
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
             }
             max = Math.max(max, dp[i]);
@@ -587,35 +589,79 @@ public class Test {
         return max;
     }
 
+    public int numIslands1(char[][] grid) {
+        int count = 0;
+        int row = grid.length, col = grid[0].length;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (grid[i][j] == '1') {
+                    dfsIsLand(grid, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public void dfsIsLand(char[][] grid, int row, int col) {
+        if (!isInRange(grid, row, col)) {
+            return;
+        }
+        if (grid[row][col] != '1') {
+            return;
+        }
+        grid[row][col] = '2';
+        dfsIsLand(grid, row - 1, col);
+        dfsIsLand(grid, row + 1, col);
+        dfsIsLand(grid, row, col - 1);
+        dfsIsLand(grid, row, col + 1);
+    }
+
+    public boolean isInRange(char[][] grid, int row, int col) {
+        return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
+    }
 
 
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        dfs(0,0, n, "", result);
+        return result;
+    }
+
+    public void dfs(int left, int right, int n, String ss, List<String> result) {
+        if (ss.length() == n * 2) {
+            result.add(ss);
+            return;
+        }
+        if (left < n) {
+            dfs(left + 1, right, n, ss + "(", result);
+        }
+        if(left > right){
+            dfs(left, right + 1, n , ss + ")", result);
+        }
+
+    }
 
 
-
-
-
-
-
-
-    private String procString(String s){
+    private String procString(String s) {
         StringBuilder result = new StringBuilder();
         Stack<Integer> numStack = new Stack();
         Stack<String> strStack = new Stack();
         char[] charArr = s.toCharArray();
         int length = charArr.length;
         String tempStr = "";
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             // 0 - 10 之间入数字栈
-            if('0' < charArr[i] && charArr[i] <= '9'){
+            if ('0' < charArr[i] && charArr[i] <= '9') {
                 numStack.push(charArr[i] - '0');
-                if(tempStr != ""){
+                if (tempStr != "") {
                     strStack.push(tempStr);
                     tempStr = "";
                 }
-            }else if ('a' <= charArr[i] && charArr[i] <= 'z'){
+            } else if ('a' <= charArr[i] && charArr[i] <= 'z') {
                 tempStr = tempStr + charArr[i];
-            }else if (')' == charArr[i]){
-                if(numStack.size() == 0 && strStack.size() == 0){
+            } else if (')' == charArr[i]) {
+                if (numStack.size() == 0 && strStack.size() == 0) {
                     continue;
                 }
                 strStack.push(tempStr);
@@ -623,23 +669,23 @@ public class Test {
                 System.out.println(numStack.size() + " strStack size: " + strStack.size());
                 String newString = algString(numStack.pop(), tempStr);
 
-                while(!strStack.isEmpty()){
+                while (!strStack.isEmpty()) {
                     newString = strStack.pop() + newString;
                     newString = algString(numStack.pop(), newString);
                 }
                 tempStr = "";
                 result.append(newString);
-            }else {
+            } else {
                 continue;
             }
         }
         return result.toString();
     }
 
-    private String algString(Integer num, String s){
+    private String algString(Integer num, String s) {
         System.out.println(num + " s : " + s);
         StringBuilder result = new StringBuilder();
-        for(int i = 0 ; i < num; i++){
+        for (int i = 0; i < num; i++) {
             result.append(s);
         }
         System.out.println(result);
@@ -647,26 +693,247 @@ public class Test {
     }
 
 
+    List<List<Integer>> result = new ArrayList<>();
+
+    LinkedList<Integer> path = new LinkedList<>();
+
+    public List<List<Integer>> combine(int n, int k) {
+        procCombine(n, k , 1);
+        return result;
+    }
+
+    public void procCombine(int n, int k , int startIndex){
+        if(path.size() == k){
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for(int i = startIndex; i <= n; i++){
+            path.addLast(i);
+            procCombine(n, k, i + 1);
+            path.removeLast();
+        }
+    }
+
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        procCombine3(k,n,0,1);
+        return result;
+    }
+
+    public void procCombine3(int k, int n, int sum, int startIndex){
+        if(sum == n && path.size() == k){
+            result.add(new ArrayList<>(path));
+            return;
+        }else if(sum > n || path.size() >= k){
+            return;
+        }
+        for(int i = startIndex; i <= Math.min(9, n); i++){
+            sum += i;
+            path.addLast(i);
+            procCombine3(k, n , sum, i + 1);
+            sum -= i;
+            path.removeLast();
+        }
+    }
+
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int left = 0 , up = 0, right = matrix[0].length - 1, down = matrix.length - 1;
+        List<Integer> result = new ArrayList<>();
+        while(true){
+            for(int i = left; i <= right; i++) {
+                result.add(matrix[up][i]);
+            }
+            if(++up > down) {
+                break;
+            }
+
+            for(int i = up; i <= down; i++){
+                result.add(matrix[i][right]);
+            }
+            if(--right < left){
+                break;
+            }
+
+            for(int i = right; i >= left; i--){
+                result.add(matrix[down][i]);
+            }
+            if(--down < up){
+                break;
+            }
+
+            for(int i = down; i >= up; i--){
+                result.add(matrix[i][left]);
+            }
+            if(++left > right){
+                break;
+            }
+        }
+        return result;
+    }
 
 
 
 
+    public int lengthOfLongestSubstring(String s){
+        if(s == null){
+            return 0;
+        }
+        char[] arr = s.toCharArray();
+        // 定义 [left, right] 区间内的字符都不重复
+        int left = 0, right = 0, max = 1, length = arr.length;
+        Set<Character> set = new HashSet<>();
+        while ( right < length){
+            if(set.contains(arr[right])){
+                while(arr[left] != arr[right]){
+                    set.remove(arr[left++]);
+                }
+                left++;
+            }else {
+                set.add(arr[right]);
+                max = Math.max(max, right - left + 1);
+            }
+            right++;
+        }
+        return max;
+
+    }
+
+    public List<String> generateParenthesis1(int n) {
+        List<String> result = new ArrayList<>();
+        procGenerateParenthesis(0, 0, result, 3, "");
+        return result;
+    }
+
+    public void procGenerateParenthesis(int left, int right, List<String> result, int n, String temp){
+        if(left == n && right == n){
+            result.add(temp);
+            return;
+        }
+        if(left < n){
+            procGenerateParenthesis(left + 1, right, result, n , temp + "(");
+        }
+        if(left > right){
+            procGenerateParenthesis(left, right + 1, result, n, temp + ")");
+        }
+    }
 
 
 
+    public int[][] merge(int[][] intervals){
+        if(intervals.length == 0){
+            return new int[0][2];
+        }
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+        List<int[]> list = new ArrayList<>();
+        for(int i = 0; i < intervals.length; i++){
+            int left = intervals[i][0], right = intervals[i][1];
+            if(list.isEmpty() || list.get(list.size() - 1)[1] < left){
+                list.add(new int[]{left, right});
+            }else{
+                list.get(list.size() - 1)[1] = Math.max(right, list.get(list.size() - 1)[1]);
+            }
+        }
+        return list.toArray(new int[list.size()][]);
+    }
 
+    List<List<Integer>> res= new ArrayList<>();
 
+    LinkedList<Integer> temp = new LinkedList<>();
 
+    public List<List<Integer>> combine4(int n, int k) {
+        combineProc(n, k , 1);
+        return res;
+    }
 
+    public void combineProc(int n, int k, int index){
+        if(temp.size() == k){
+            res.add(new ArrayList<>(temp));
+            return;
+        }
+        for(int i = index; i <= n; i++){
+            temp.add(i);
+            combineProc(n, k, index + 1);
+            temp.removeLast();
+        }
+    }
 
+    int t;
 
+    // 旋转前的尾结点
+    ListNode lastNode;
 
+    // 旋转后的头节点
+    ListNode firsNode;
 
+    public ListNode rotateRight(ListNode head, int k) {
+        ListNode tempNode = head;
 
+        searchIndex(head, k, 1);
+        if(firsNode == head){
+            return head;
+        }
 
+        lastNode.next = tempNode;
+        return firsNode;
+    }
+
+    // 返回修改链表前当前Node 倒数的index
+    public int searchIndex(ListNode cur, int k, int count){
+        if(cur.next == null){
+            lastNode = cur;
+            // 对k 取余得到，t 满足 1 <= t <= count
+            t = k % count;
+            if(t == 1){
+                firsNode = cur;
+            }
+            return 1;
+        }
+        int i = searchIndex(cur.next, k, count + 1) + 1;
+        if(i == t){
+            firsNode = cur;
+        }else if (t + 1 == i){
+            // 将旋转后的尾结点置为null 防止环
+            cur.next = null;
+        }
+        return i;
+    }
+
+    public void reorderList(ListNode head) {
+        if(head == null){
+            return;
+        }
+        List<ListNode> list = new ArrayList<>();
+        ListNode cur = head;
+        while(cur != null){
+            list.add(cur);
+            cur = cur.next;
+        }
+        int left = 0, right = list.size() - 1;
+        while(left < right){
+            list.get(left).next = list.get(right);
+            left++;
+            if(left == right){
+                break;
+            }
+            list.get(right).next = list.get(left);
+            right--;
+        }
+
+    }
 
 
     public static void main(String[] args) {
+        Test test = new Test();
+        List<String> re = test.generateParenthesis1(3);
+//        List<List<Integer>> result = test.combinationSum3(9,45);
+        System.out.println(re);
+    }
+
+    public static void main_1(String[] args) {
         int[] arr = new int[]{4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3};
         char grid[][] = {
                 {'1', '1', '1', '1', '0'},
@@ -714,7 +981,7 @@ public class Test {
         t_2.left = t_5;
         t_5.left = t_6;
         t_6.right = t_7;
-        List<Integer> result =  test.rightSideView(t_1);
+        List<Integer> result = test.rightSideView(t_1);
 //        int result = test.maxAreaOfIsland(grid2);
         System.out.println(JSON.toJSONString(result));
     }
@@ -802,9 +1069,6 @@ public class Test {
             nums[to] = temp;
         }
     }
-
-
-
 
 
 }
