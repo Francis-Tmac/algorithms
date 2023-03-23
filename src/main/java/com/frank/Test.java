@@ -5,10 +5,14 @@ import com.alibaba.fastjson.JSON;
 import com.frank.algorithms.ListNode;
 import com.frank.algorithms.leetcode.LeetCode;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.ThreadUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author fukangyang
@@ -243,7 +247,7 @@ public class Test {
                 map.put(nums[i],i);
             }
         }
-        return;
+        return null;
     }
 
     public List<List<Integer>> threeSum(int[] nums) {
@@ -926,11 +930,129 @@ public class Test {
     }
 
 
-    public static void main(String[] args) {
-        Test test = new Test();
-        List<String> re = test.generateParenthesis1(3);
+    public static void main(String[] args) throws InterruptedException {
+        Map<String, List<String>> preDepMap = getMap();
+//        HashMap<String, String> map = new HashMap<>(1000);
+//        int count = 0;
+//        for (Map.Entry<String, List<String>> entry : preDepMap.entrySet()) {
+//            List<String> list = entry.getValue();
+//            map.put(entry.getKey(), JSON.toJSONString(list));
+//            list.clear();
+//            ++count;
+//            if (map.size() >= 1000 || count >= preDepMap.size()) {
+//                // map累计数量达到指定阈值,先分批提交到 redis
+//                map = new HashMap<>(1000);
+//            }
+//        }
+        try{
+            throw new NullPointerException();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+
+    }
+
+    private static Map<String, List<String>> getMap(){
+        Map<String, List<String>> map = new HashMap<>(10000);
+        for(int i = 0; i < 10000 ; i++){
+            String key = i + "_key";
+            List<String> list = new ArrayList<>(1000);
+            for(int j = 0; j < 1000; j++){
+                String value = i + "_" + j + "_value";
+                list.add(value);
+            }
+            map.put(key, list);
+        }
+        return map;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+//    public static void main(String[] args) {
+//        Test test = new Test();
+//        List<String> re = test.generateParenthesis1(3);
 //        List<List<Integer>> result = test.combinationSum3(9,45);
-        System.out.println(re);
+//        System.out.println(re);
+//        List<Integer> a = Lists.newArrayList(1,2,3);
+//        List<Integer> b = Lists.newArrayList(1,2,3,4);
+//        b.removeAll(a);
+//        System.out.println(JSON.toJSON(b));
+//        String ss = "sqoop import \\\\\\n--connect 'jdbc:mysql://://10.74.48.74:3306/datamax?useUnicode=true&characterEncoding=utf-8' \\\\\\n--username 'root' \\\\\\n--password '******' \\\\\\n--query 'SELECT `a`,`datasourceId` from datamax.data_integration_endpoint'\\\" WHERE 1 AND \\\\$CONDITIONS \\\\\\n--m 1 \\\\\\n--delete-target-dir \\\\\\n--target-dir /user/hive/temp/default/order \\\\\\n--null-string '\\\\\\\\N' \\\\\\n--null-non-string '\\\\\\\\N' \\\\\\n--fields-terminated-by \\\"\\\\036\\\" \\\\\\n--hive-drop-import-delims \\\\\\n--fetch-size 10000 \\\\\\n--driver com.mysql.cj.jdbc.Driver \\\\\\n--mapreduce-job-name jobName \\\\\\nLOAD DATA INPATH '/user/hive/temp/default/order' OVERWRITE INTO TABLE default.order";
+//        System.out.println(ss);
+//        SubTaskDTO taskDTO1 = new SubTaskDTO();
+//        taskDTO1.setTaskName("10.16.153.48:1530/smeststuat?connectTimeOut=2000");
+//        SubTaskDTO taskDTO2 = new SubTaskDTO();
+//        taskDTO2.setTaskName("10.16.153.48:1530/smeststuat");
+//        List<SubTaskDTO> taskDTOList = Arrays.asList(taskDTO1, taskDTO2);
+//        Set<String> set = taskDTOList.stream().map(SubTaskDTO::getTaskName).collect(Collectors.toSet());
+//        System.out.println(JSON.toJSON(set));
+
+//        String url = "10.16.153.48:1530/smeststuat?connectTimeOut=2000";
+//        if(url.contains("?")){
+//            int index = url.indexOf("?");
+//            url = url.substring(0, index);
+//        }
+//        System.out.println(url);
+
+//        String path = "taskInstance=TASK-20230215-1621815729458339842_1-605-194508894_:2_:datamax_:test_mapping";
+//        int index = path.indexOf("_:");
+//        String tableKey = path.substring(index+2);
+//        System.out.println(tableKey.replace("_:","_"));
+
+//        String ss = "id,code,age";
+//        List<String> priKeyList = Arrays.asList(ss.split(","));
+//        String[] keyArr = priKeyList.stream().map(Test::getJoinKey).toArray(String[]::new);
+//        System.out.println(StringUtils.join(keyArr," and "));
+//
+//        String[] whereArr = priKeyList.stream().map(Test::getWhereCondition).toArray(String[]::new);
+//        System.out.println(StringUtils.join(whereArr," and "));
+
+//        List<String> arrList = new ArrayList<>();
+//        List<String> ignoreList = new ArrayList<>();
+//        arrList.add("ssss");
+//        arrList.add("ddddd");
+//        for (String ss : arrList){
+//            if("ssss".equals(ss)){
+//                ignoreList.add(ss);
+//            }
+//        }
+//        arrList.removeAll(ignoreList);
+//        System.out.println(JSON.toJSONString(arrList));
+//
+//        List<String> list = new ArrayList<>(Collections.emptyList());
+//        list.add(null);
+//        list.add(null);
+//        System.out.println(list.size());
+//    }
+
+    private static String getJoinKey(String key){
+        return "a." + key + "=" + "b." + key;
+    }
+
+    private static String getWhereCondition(String key){
+        return "b." + key + " IS NULL";
+    }
+
+    private static String getTableName(String jobName){
+        int index = jobName.lastIndexOf("_:");
+        return jobName.substring(index + 2);
+    }
+
+    private static String getDbName(String jobName){
+        int index = jobName.lastIndexOf("_:");
+        String executeKey = jobName.substring(0,index);
+        int dbIndex = executeKey.lastIndexOf("_:");
+        return executeKey.substring(dbIndex+2);
     }
 
     public static void main_1(String[] args) {
