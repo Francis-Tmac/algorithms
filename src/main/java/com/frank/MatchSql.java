@@ -16,7 +16,10 @@ public class MatchSql {
     public static final char START = '(';
     public static final char END = ')';
 
-    private final static Pattern PARTITION_SQL = Pattern.compile("(PARTITION)(\\s|\\n){1,100}(BY)(\\s|\\n)([\\w\\W]*)(?=(\\s|\\n)((COMMENT(\\s|\\n))|(STORED(\\s|\\n){1,100}AS(\\s|\\n){1,100}KUDU)))"
+    private final static Pattern PARTITION_SQL = Pattern.compile("(PARTITION)(\\s|\\n){1,100}(BY)(\\s|\\n)([\\w\\W]+?)(?=((COMMENT(\\s|\\n)|(STORED(\\s|\\n){1,100}AS(\\s|\\n){1,100}KUDU))))"
+            , Pattern.CASE_INSENSITIVE);
+
+    private final static Pattern PARTITION_SQL_1 = Pattern.compile("(PARTITION)(\\s)+?(BY)(\\s)([\\w\\W]+?)(?=(COMMENT\\s|STORED(\\s)+?AS(\\s)+?KUDU))"
             , Pattern.CASE_INSENSITIVE);
 
 
@@ -161,13 +164,90 @@ public class MatchSql {
                 "    < '2023-11',\n" +
                 "    PARTITION '2023-11' <=\n" +
                 "  VALUES\n" +
+                "  VALUES\n" +
+                "    < '2021-11',\n" +
+                "    PARTITION '2021-11' <=\n" +
+                "  VALUES\n" +
+                "    < '2021-12',\n" +
+                "    PARTITION '2021-12' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-01',\n" +
+                "    PARTITION '2022-01' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-02',\n" +
+                "    PARTITION '2022-02' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-03',\n" +
+                "    PARTITION '2022-03' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-04',\n" +
+                "    PARTITION '2022-04' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-05',\n" +
+                "    PARTITION '2022-05' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-06',\n" +
+                "    PARTITION '2022-06' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-07',\n" +
+                "    PARTITION '2022-07' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-08',\n" +
+                "    PARTITION '2022-08' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-09',\n" +
+                "    PARTITION '2022-09' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-10',\n" +
+                "    PARTITION '2022-10' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-11',\n" +
+                "    PARTITION '2022-11' <=\n" +
+                "  VALUES\n" +
+                "    < '2022-12',\n" +
+                "    PARTITION '2022-12' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-01',\n" +
+                "    PARTITION '2023-01' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-02',\n" +
+                "    PARTITION '2023-02' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-03',\n" +
+                "    PARTITION '2023-03' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-04',\n" +
+                "    PARTITION '2023-04' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-05',\n" +
+                "    PARTITION '2023-05' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-06',\n" +
+                "    PARTITION '2023-06' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-07',\n" +
+                "    PARTITION '2023-07' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-08',\n" +
+                "    PARTITION '2023-08' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-09',\n" +
+                "    PARTITION '2023-09' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-10',\n" +
+                "    PARTITION '2023-10' <=\n" +
+                "  VALUES\n" +
+                "    < '2023-11',\n" +
+                "    PARTITION '2023-11' <=\n" +
+                "  VALUES\n" +
                 "    < '2023-12',\n" +
                 "    PARTITION '2023-12' <=\n" +
                 "  VALUES\n" +
                 "    < '2024-01'\n" +
-                ") STORED AS KUDU";
+                ") comMENT" +
+                "\n 'dsfsdf' STORED AS KUDU";
 
-        Matcher matcher = PARTITION_SQL.matcher(sql);
+        Matcher matcher = PARTITION_SQL_1.matcher(sql);
 
         if(matcher.find()){
             String partitionInfo = matcher.group();
