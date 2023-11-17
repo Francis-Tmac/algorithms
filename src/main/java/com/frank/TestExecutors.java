@@ -36,13 +36,13 @@ public class TestExecutors {
                     atomicInteger.getAndDecrement();
                     count.countDown();
 
-                    log.info("{} 成功了", o);
+//                    log.info("{} 成功了", o);
                 }
 
                 @Override
                 public void onFailure(@NotNull Throwable throwable) {
                     count.countDown();
-                    log.info("失败了");
+//                    log.info("失败了");
                 }
             };
             Futures.addCallback(future, futureCallback, listeningExecutorService);
@@ -50,10 +50,10 @@ public class TestExecutors {
 
         count.await();
         if(atomicInteger.get() > 0){
-            log.info("this count is {}", atomicInteger.get());
+//            log.info("this count is {}", atomicInteger.get());
         }
         executorService.shutdown();
-        log.info("运行结束了");
+//        log.info("运行结束了");
     }
 
 

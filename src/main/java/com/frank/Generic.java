@@ -6,6 +6,8 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * {@link  }
@@ -38,6 +40,15 @@ public class Generic<T> {
 
          }
 
+
+    private static final String HINT_START = "-- DATAMAX_HINT_START:dev_ignore\n";
+
+    private static final String HINT_END = "\n-- DATAMAX_HINT_END";
+
+    private static Pattern HINT_PATTERN =
+            Pattern.compile("("+HINT_START+")((.|\\n)+? )("+HINT_END+")");
+
+    private static final Pattern DYNAMIC_INDEX_REGEX = Pattern.compile("\\{.+?\\|.+}");
     public static void main(String[] args) throws Exception{
 //        fib(5);
 //        ExecutorService service = Executors.newCachedThreadPool();
@@ -48,11 +59,33 @@ public class Generic<T> {
 //
 //        ExecutorService service3 = Executors.newScheduledThreadPool(4);
 
-        Queue<Integer> queue = new ArrayBlockingQueue<>(5);
-        queue.offer(1);
-        queue.offer(2);
-        queue.offer(3);
-        System.out.println(queue.poll());
+//        Queue<Integer> queue = new ArrayBlockingQueue<>(5);
+//        queue.offer(1);
+//        queue.offer(2);
+//        queue.offer(3);
+//        System.out.println(queue.poll());
+
+        String ddd = "-- DATAMAX_HINT_START:dev_ignore\n" +
+                " sfsdf\n" +
+                "sdf " +
+                "  \n-- DATAMAX_HINT_END";
+
+        String tttt = "sfasdfasdf -- DATAMAX_HINT_START:dev_ignore\n" +
+                "sfsdf\n" +
+                "-- DATAMAX_HINT_START:dev_ignore\n" +
+                "-- DATAMAX_HINT_END\n" +
+                "sfsdf\n" +
+                "sdf \n" +
+                "-- DATAMAX_HINT_ENDs safasdfsdf";
+
+
+
+
+//        String jobName = "322_mcsp_smc_05_smc_so_line_202112_1722188243495075842";
+//
+//        String ddd = jobName.substring(0, jobName.lastIndexOf("_"));
+//        System.out.println(ddd);
+
 
     }
 
@@ -75,4 +108,5 @@ public class Generic<T> {
         }
         return arr[n];
     }
+
 }

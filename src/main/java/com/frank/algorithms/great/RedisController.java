@@ -51,7 +51,7 @@ public class RedisController {
 
         Boolean lock = (Boolean) redisTemp.execute(redisCallback);
         if(lock){
-            log.info("进入锁！！！");
+//            log.info("进入锁！！！");
             try {
                 Thread.sleep(15000);
             } catch (InterruptedException e) {
@@ -65,7 +65,7 @@ public class RedisController {
                 RedisScript<Boolean> redisScript = RedisScript.of(script, Boolean.class);
                 List<String> keyList = Arrays.asList(key);
                 Boolean result = (Boolean) redisTemp.execute(redisScript, keyList, value);
-                log.info("释放锁的结果：{}", result);
+//                log.info("释放锁的结果：{}", result);
             }
         }
         return "finish method";

@@ -61,7 +61,7 @@ public class RedisLock implements AutoCloseable {
         List<String> keys = Arrays.asList(key);
 
         Boolean result = (Boolean)redisTemplate.execute(redisScript, keys, value);
-        log.info("释放锁的结果："+result);
+//        log.info("释放锁的结果："+result);
         return result;
     }
 
